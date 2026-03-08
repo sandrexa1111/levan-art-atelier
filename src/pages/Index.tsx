@@ -7,16 +7,8 @@ import ArtworkCard from "@/components/ArtworkCard";
 import ProductCard from "@/components/ProductCard";
 import artworkHero from "@/assets/artwork-hero.jpg";
 import artistPortrait from "@/assets/artist-portrait.jpg";
+import { fadeUp, fadeUpSimple } from "@/lib/animations";
 import { useState } from "react";
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.1, duration: 0.6, ease: "easeOut" },
-  }),
-};
 
 export default function Index() {
   const [email, setEmail] = useState("");
@@ -65,22 +57,10 @@ export default function Index() {
       <section className="py-24 bg-background">
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-2 gap-16 items-center max-w-5xl mx-auto">
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={fadeUp}
-              custom={0}
-            >
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpSimple}>
               <img src={artistPortrait} alt="Levan Mosiashvili in studio" className="w-full aspect-[3/4] object-cover" />
             </motion.div>
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={fadeUp}
-              custom={1}
-            >
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={1}>
               <p className="text-gold text-sm tracking-[0.3em] uppercase mb-4">The Artist</p>
               <h2 className="font-serif text-3xl md:text-4xl mb-6">A Journey Through Color</h2>
               <p className="text-muted-foreground leading-relaxed mb-6">
@@ -108,23 +88,13 @@ export default function Index() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {featured.map((artwork, i) => (
-              <motion.div
-                key={artwork.id}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                variants={fadeUp}
-                custom={i}
-              >
+              <motion.div key={artwork.id} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i}>
                 <ArtworkCard artwork={artwork} />
               </motion.div>
             ))}
           </div>
           <div className="text-center mt-12">
-            <Link
-              to="/gallery"
-              className="inline-flex items-center gap-2 text-sm tracking-wider uppercase hover:text-gold transition-colors"
-            >
+            <Link to="/gallery" className="inline-flex items-center gap-2 text-sm tracking-wider uppercase hover:text-gold transition-colors">
               View Full Gallery <ArrowRight size={16} />
             </Link>
           </div>
@@ -140,23 +110,13 @@ export default function Index() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-4xl mx-auto">
             {featuredProducts.map((product, i) => (
-              <motion.div
-                key={product.id}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                variants={fadeUp}
-                custom={i}
-              >
+              <motion.div key={product.id} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i}>
                 <ProductCard product={product} />
               </motion.div>
             ))}
           </div>
           <div className="text-center mt-12">
-            <Link
-              to="/shop"
-              className="inline-flex items-center gap-2 text-sm tracking-wider uppercase hover:text-gold transition-colors"
-            >
+            <Link to="/shop" className="inline-flex items-center gap-2 text-sm tracking-wider uppercase hover:text-gold transition-colors">
               Browse All Products <ArrowRight size={16} />
             </Link>
           </div>
@@ -171,13 +131,7 @@ export default function Index() {
           <p className="text-cream/60 mb-8">
             Be the first to know about new artworks, exhibitions, and exclusive releases.
           </p>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              setEmail("");
-            }}
-            className="flex flex-col sm:flex-row gap-3"
-          >
+          <form onSubmit={(e) => { e.preventDefault(); setEmail(""); }} className="flex flex-col sm:flex-row gap-3">
             <input
               type="email"
               value={email}
@@ -186,10 +140,7 @@ export default function Index() {
               required
               className="flex-1 bg-cream/10 border border-cream/20 px-4 py-3 text-sm text-cream placeholder:text-cream/40 focus:outline-none focus:border-gold transition-colors"
             />
-            <button
-              type="submit"
-              className="bg-gold text-charcoal px-8 py-3 text-sm tracking-wider uppercase font-semibold hover:bg-gold-light transition-colors"
-            >
+            <button type="submit" className="bg-gold text-charcoal px-8 py-3 text-sm tracking-wider uppercase font-semibold hover:bg-gold-light transition-colors">
               Subscribe
             </button>
           </form>

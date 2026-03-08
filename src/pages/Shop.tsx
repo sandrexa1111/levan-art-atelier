@@ -2,14 +2,7 @@ import { motion } from "framer-motion";
 import { products, productTypeLabels, ProductType } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
 import { useState } from "react";
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: (i: number) => ({
-    opacity: 1, y: 0,
-    transition: { delay: i * 0.08, duration: 0.6, ease: "easeOut" },
-  }),
-};
+import { fadeUp } from "@/lib/animations";
 
 const types: (ProductType | "all")[] = ["all", "print", "tshirt", "mug", "poster", "limited-edition"];
 
@@ -24,34 +17,22 @@ export default function Shop() {
           <p className="text-gold text-sm tracking-[0.3em] uppercase mb-4">Shop</p>
           <h1 className="font-serif text-4xl md:text-5xl">Art & Merchandise</h1>
         </div>
-
-        {/* Filters */}
         <div className="flex flex-wrap justify-center gap-3 mb-16">
           {types.map((type) => (
             <button
               key={type}
               onClick={() => setFilter(type)}
               className={`text-xs tracking-wider uppercase px-4 py-2 border transition-colors ${
-                filter === type
-                  ? "bg-charcoal text-cream border-charcoal"
-                  : "border-border hover:border-foreground"
+                filter === type ? "bg-charcoal text-cream border-charcoal" : "border-border hover:border-foreground"
               }`}
             >
               {type === "all" ? "All" : productTypeLabels[type]}
             </button>
           ))}
         </div>
-
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
           {filtered.map((product, i) => (
-            <motion.div
-              key={product.id}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={fadeUp}
-              custom={i}
-            >
+            <motion.div key={product.id} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i}>
               <ProductCard product={product} />
             </motion.div>
           ))}
