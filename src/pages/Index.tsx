@@ -8,6 +8,7 @@ import { Artwork } from "@/lib/artwork";
 import ArtworkCard from "@/components/ArtworkCard";
 import { fadeUp, fadeUpSimple } from "@/lib/animations";
 import artistPortrait from "@/assets/artist-portrait.jpg";
+import heroPainting from "@/assets/hero-painting.png.asset.json";
 
 export default function Index() {
   const { t } = useLang();
