@@ -3,46 +3,61 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { CartProvider } from "@/context/CartContext";
+import { VisitListProvider } from "@/context/VisitListContext";
+import { LanguageProvider } from "@/i18n/LanguageContext";
+import { AuthProvider } from "@/context/AuthContext";
 import Layout from "@/components/Layout";
 import Index from "./pages/Index";
-import Gallery from "./pages/Gallery";
+import Artworks from "./pages/Artworks";
 import ArtworkDetail from "./pages/ArtworkDetail";
-import Shop from "./pages/Shop";
-import ProductDetail from "./pages/ProductDetail";
-import Cart from "./pages/Cart";
 import Artist from "./pages/Artist";
-import Blog from "./pages/Blog";
-import BlogPost from "./pages/BlogPost";
-import Contact from "./pages/Contact";
+import Periods from "./pages/Periods";
+import VisitList from "./pages/VisitList";
+import PrivateViewing from "./pages/PrivateViewing";
 import NotFound from "./pages/NotFound";
+import AdminLogin from "./pages/admin/AdminLogin";
+import AdminLayout from "./pages/admin/AdminLayout";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminArtworks from "./pages/admin/AdminArtworks";
+import AdminArtworkEditor from "./pages/admin/AdminArtworkEditor";
+import AdminViewings from "./pages/admin/AdminViewings";
+import AdminTbcRequests from "./pages/admin/AdminTbcRequests";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <CartProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route element={<Layout />}>
-              <Route path="/" element={<Index />} />
-              <Route path="/gallery" element={<Gallery />} />
-              <Route path="/gallery/:id" element={<ArtworkDetail />} />
-              <Route path="/shop" element={<Shop />} />
-              <Route path="/shop/:id" element={<ProductDetail />} />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/artist" element={<Artist />} />
-              <Route path="/blog" element={<Blog />} />
-              <Route path="/blog/:id" element={<BlogPost />} />
-              <Route path="/contact" element={<Contact />} />
-            </Route>
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </CartProvider>
+      <LanguageProvider>
+        <AuthProvider>
+          <VisitListProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <Routes>
+                <Route element={<Layout />}>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/artworks" element={<Artworks />} />
+                  <Route path="/artworks/:slug" element={<ArtworkDetail />} />
+                  <Route path="/periods" element={<Periods />} />
+                  <Route path="/artist" element={<Artist />} />
+                  <Route path="/private-viewing" element={<PrivateViewing />} />
+                  <Route path="/visit-list" element={<VisitList />} />
+                  <Route path="/admin/login" element={<AdminLogin />} />
+                </Route>
+                <Route path="/admin" element={<AdminLayout />}>
+                  <Route index element={<AdminDashboard />} />
+                  <Route path="artworks" element={<AdminArtworks />} />
+                  <Route path="artworks/:id" element={<AdminArtworkEditor />} />
+                  <Route path="viewings" element={<AdminViewings />} />
+                  <Route path="tbc" element={<AdminTbcRequests />} />
+                </Route>
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </BrowserRouter>
+          </VisitListProvider>
+        </AuthProvider>
+      </LanguageProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );
