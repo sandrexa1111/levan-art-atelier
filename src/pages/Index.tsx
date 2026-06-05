@@ -1,149 +1,155 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
-import { artworks } from "@/data/artworks";
-import { products } from "@/data/products";
+import { ArrowRight, MapPin } from "lucide-react";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useLang } from "@/i18n/LanguageContext";
+import { Artwork } from "@/lib/artwork";
 import ArtworkCard from "@/components/ArtworkCard";
-import ProductCard from "@/components/ProductCard";
-import artworkHero from "@/assets/artwork-hero.jpg";
-import artistPortrait from "@/assets/artist-portrait.jpg";
 import { fadeUp, fadeUpSimple } from "@/lib/animations";
-import { useState } from "react";
+import artistPortrait from "@/assets/artist-portrait.jpg";
 
 export default function Index() {
-  const [email, setEmail] = useState("");
-  const featured = artworks.slice(0, 4);
-  const featuredProducts = products.slice(0, 3);
+  const { t } = useLang();
+  const [featured, setFeatured] = useState<Artwork[]>([]);
+
+  useEffect(() => {
+    supabase
+      .from("artworks")
+      .select("*")
+      .eq("is_published", true)
+      .eq("is_featured", true)
+      .order("created_at", { ascending: false })
+      .limit(4)
+      .then(({ data }) => setFeatured((data as Artwork[]) || []));
+  }, []);
 
   return (
     <div>
       {/* Hero */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0">
-          <img src={artworkHero} alt="Genesis of Fire by Levan Mosiashvili" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-charcoal/50" />
+      <section className="relative min-h-[88vh] flex items-center justify-center overflow-hidden bg-charcoal">
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute inset-0 bg-gradient-to-b from-charcoal via-charcoal/60 to-charcoal" />
         </div>
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.3 }}
-          className="relative text-center px-6"
+          transition={{ duration: 1, delay: 0.2 }}
+          className="relative text-center px-6 max-w-3xl"
         >
-          <p className="text-gold text-sm tracking-[0.3em] uppercase mb-4">Contemporary Fine Art</p>
-          <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl text-cream leading-tight mb-6">
-            Levan<br />Mosiashvili
+          <p className="text-gold text-xs tracking-[0.4em] uppercase mb-6">{t("footer.byAppointment")}</p>
+          <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl text-cream leading-tight mb-6">
+            {t("pages.home.heroTitle")}
           </h1>
-          <p className="text-cream/70 text-lg mb-10 max-w-lg mx-auto">
-            Where color meets emotion. Original paintings, fine art prints, and exclusive merchandise.
+          <p className="text-cream/70 text-base md:text-lg mb-10 max-w-xl mx-auto leading-relaxed">
+            {t("pages.home.heroSubtitle")}
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link
-              to="/gallery"
-              className="inline-flex items-center gap-2 bg-cream text-charcoal px-8 py-3.5 text-sm tracking-wider uppercase hover:bg-gold transition-colors duration-300"
+              to="/artworks"
+              className="inline-flex items-center justify-center gap-2 bg-cream text-charcoal px-8 py-3.5 text-xs tracking-[0.2em] uppercase hover:bg-gold transition-colors duration-300"
             >
-              Explore Gallery <ArrowRight size={16} />
+              {t("cta.viewArtworks")} <ArrowRight size={14} />
             </Link>
             <Link
-              to="/shop"
-              className="inline-flex items-center gap-2 border border-cream/40 text-cream px-8 py-3.5 text-sm tracking-wider uppercase hover:border-gold hover:text-gold transition-colors duration-300"
+              to="/private-viewing"
+              className="inline-flex items-center justify-center gap-2 border border-cream/40 text-cream px-8 py-3.5 text-xs tracking-[0.2em] uppercase hover:border-gold hover:text-gold transition-colors duration-300"
             >
-              Shop Art
+              {t("cta.planViewing")}
             </Link>
           </div>
         </motion.div>
       </section>
 
-      {/* About Snippet */}
+      {/* Featured */}
+      {featured.length > 0 && (
+        <section className="py-24 bg-background">
+          <div className="container mx-auto px-6">
+            <div className="text-center mb-14">
+              <p className="text-gold text-xs tracking-[0.3em] uppercase mb-3">{t("nav.artworks")}</p>
+              <h2 className="font-serif text-3xl md:text-4xl">{t("pages.home.featured")}</h2>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {featured.map((a, i) => (
+                <motion.div key={a.id} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i}>
+                  <ArtworkCard artwork={a} />
+                </motion.div>
+              ))}
+            </div>
+            <div className="text-center mt-12">
+              <Link to="/artworks" className="inline-flex items-center gap-2 text-xs tracking-[0.2em] uppercase hover:text-gold transition-colors">
+                {t("cta.viewArtworks")} <ArrowRight size={14} />
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Periods preview */}
+      <section className="py-24 bg-secondary">
+        <div className="container mx-auto px-6 max-w-5xl">
+          <div className="text-center mb-12">
+            <p className="text-gold text-xs tracking-[0.3em] uppercase mb-3">{t("nav.periods")}</p>
+            <h2 className="font-serif text-3xl md:text-4xl">{t("pages.home.periodsTitle")}</h2>
+          </div>
+          <div className="grid sm:grid-cols-3 gap-6">
+            {(["georgian", "french", "abstract"] as const).map((p) => (
+              <Link
+                key={p}
+                to={`/artworks?period=${p}`}
+                className="group block p-8 bg-card border border-border hover:border-gold transition-colors"
+              >
+                <p className="text-xs tracking-[0.3em] uppercase text-muted-foreground mb-3 group-hover:text-gold transition-colors">
+                  {p}
+                </p>
+                <h3 className="font-serif text-xl mb-4">{t(`period.${p}`)}</h3>
+                <span className="inline-flex items-center gap-1 text-xs tracking-widest uppercase text-foreground/70 group-hover:text-gold transition-colors">
+                  {t("pages.periods.explore")} <ArrowRight size={12} />
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Artist preview */}
       <section className="py-24 bg-background">
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-2 gap-16 items-center max-w-5xl mx-auto">
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpSimple}>
-              <img src={artistPortrait} alt="Levan Mosiashvili in studio" className="w-full aspect-[3/4] object-cover" />
+              <img src={artistPortrait} alt="Levan Mosiashvili" className="w-full aspect-[3/4] object-cover" />
             </motion.div>
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={1}>
-              <p className="text-gold text-sm tracking-[0.3em] uppercase mb-4">The Artist</p>
-              <h2 className="font-serif text-3xl md:text-4xl mb-6">A Journey Through Color</h2>
-              <p className="text-muted-foreground leading-relaxed mb-6">
-                Based in Tbilisi, Georgia, Levan Mosiashvili creates bold, emotionally charged abstract paintings that
-                bridge Eastern and Western artistic traditions. His work explores the tension between structure and
-                freedom, drawing from Georgian heritage and the dramatic landscapes of the Caucasus.
+              <p className="text-gold text-xs tracking-[0.3em] uppercase mb-3">{t("nav.artist")}</p>
+              <h2 className="font-serif text-3xl md:text-4xl mb-6">{t("pages.home.artistPreview")}</h2>
+              <p className="text-muted-foreground leading-relaxed mb-6 line-clamp-6">
+                {t("pages.artist.bio")}
               </p>
-              <Link
-                to="/artist"
-                className="inline-flex items-center gap-2 text-sm tracking-wider uppercase text-foreground hover:text-gold transition-colors"
-              >
-                Read More <ArrowRight size={16} />
+              <Link to="/artist" className="inline-flex items-center gap-2 text-xs tracking-[0.2em] uppercase hover:text-gold transition-colors">
+                {t("pages.home.readMore")} <ArrowRight size={14} />
               </Link>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Featured Artworks */}
-      <section className="py-24 bg-secondary">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <p className="text-gold text-sm tracking-[0.3em] uppercase mb-4">Collection</p>
-            <h2 className="font-serif text-3xl md:text-4xl">Featured Artworks</h2>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {featured.map((artwork, i) => (
-              <motion.div key={artwork.id} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i}>
-                <ArtworkCard artwork={artwork} />
-              </motion.div>
-            ))}
-          </div>
-          <div className="text-center mt-12">
-            <Link to="/gallery" className="inline-flex items-center gap-2 text-sm tracking-wider uppercase hover:text-gold transition-colors">
-              View Full Gallery <ArrowRight size={16} />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Shop */}
-      <section className="py-24 bg-background">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <p className="text-gold text-sm tracking-[0.3em] uppercase mb-4">Shop</p>
-            <h2 className="font-serif text-3xl md:text-4xl">Bring Art Home</h2>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-4xl mx-auto">
-            {featuredProducts.map((product, i) => (
-              <motion.div key={product.id} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i}>
-                <ProductCard product={product} />
-              </motion.div>
-            ))}
-          </div>
-          <div className="text-center mt-12">
-            <Link to="/shop" className="inline-flex items-center gap-2 text-sm tracking-wider uppercase hover:text-gold transition-colors">
-              Browse All Products <ArrowRight size={16} />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Newsletter */}
+      {/* Private Viewing */}
       <section className="py-24 bg-charcoal text-cream">
-        <div className="container mx-auto px-6 text-center max-w-xl">
-          <p className="text-gold text-sm tracking-[0.3em] uppercase mb-4">Stay Connected</p>
-          <h2 className="font-serif text-3xl md:text-4xl mb-4">Newsletter</h2>
-          <p className="text-cream/60 mb-8">
-            Be the first to know about new artworks, exhibitions, and exclusive releases.
-          </p>
-          <form onSubmit={(e) => { e.preventDefault(); setEmail(""); }} className="flex flex-col sm:flex-row gap-3">
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Your email address"
-              required
-              className="flex-1 bg-cream/10 border border-cream/20 px-4 py-3 text-sm text-cream placeholder:text-cream/40 focus:outline-none focus:border-gold transition-colors"
-            />
-            <button type="submit" className="bg-gold text-charcoal px-8 py-3 text-sm tracking-wider uppercase font-semibold hover:bg-gold-light transition-colors">
-              Subscribe
-            </button>
-          </form>
+        <div className="container mx-auto px-6 max-w-2xl text-center">
+          <p className="text-gold text-xs tracking-[0.3em] uppercase mb-3">{t("pages.home.viewingTitle")}</p>
+          <h2 className="font-serif text-3xl md:text-4xl mb-6">{t("cta.planViewing")}</h2>
+          <p className="text-cream/70 leading-relaxed mb-8">{t("pages.home.viewingBody")}</p>
+          <div className="inline-flex items-center gap-2 text-cream/60 mb-8 text-sm">
+            <MapPin size={16} className="text-gold" /> {t("footer.address")}
+          </div>
+          <div>
+            <Link
+              to="/private-viewing"
+              className="inline-flex items-center gap-2 bg-gold text-charcoal px-8 py-3.5 text-xs tracking-[0.2em] uppercase hover:bg-gold-light transition-colors"
+            >
+              {t("cta.planViewing")} <ArrowRight size={14} />
+            </Link>
+          </div>
         </div>
       </section>
     </div>
