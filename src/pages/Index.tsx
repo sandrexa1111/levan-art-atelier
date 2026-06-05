@@ -8,6 +8,7 @@ import { Artwork } from "@/lib/artwork";
 import ArtworkCard from "@/components/ArtworkCard";
 import { fadeUp, fadeUpSimple } from "@/lib/animations";
 import artistPortrait from "@/assets/artist-portrait.jpg";
+import heroPainting from "@/assets/hero-painting.png.asset.json";
 
 export default function Index() {
   const { t } = useLang();
@@ -27,10 +28,13 @@ export default function Index() {
   return (
     <div>
       {/* Hero */}
-      <section className="relative min-h-[88vh] flex items-center justify-center overflow-hidden bg-charcoal">
-        <div className="absolute inset-0 opacity-30">
-          <div className="absolute inset-0 bg-gradient-to-b from-charcoal via-charcoal/60 to-charcoal" />
-        </div>
+      <section className="relative min-h-[92vh] flex items-center justify-center overflow-hidden bg-charcoal">
+        <div
+          className="absolute inset-0 bg-cover bg-center scale-105"
+          style={{ backgroundImage: `url(${heroPainting.url})` }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-charcoal/85 via-charcoal/60 to-charcoal/90" />
+        <div className="absolute inset-0 bg-charcoal/30" />
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -38,10 +42,10 @@ export default function Index() {
           className="relative text-center px-6 max-w-3xl"
         >
           <p className="text-gold text-xs tracking-[0.4em] uppercase mb-6">{t("footer.byAppointment")}</p>
-          <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl text-cream leading-tight mb-6">
+          <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl text-cream leading-tight mb-6 drop-shadow-[0_2px_20px_rgba(0,0,0,0.6)]">
             {t("pages.home.heroTitle")}
           </h1>
-          <p className="text-cream/70 text-base md:text-lg mb-10 max-w-xl mx-auto leading-relaxed">
+          <p className="text-cream/80 text-base md:text-lg mb-10 max-w-xl mx-auto leading-relaxed">
             {t("pages.home.heroSubtitle")}
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -53,7 +57,7 @@ export default function Index() {
             </Link>
             <Link
               to="/private-viewing"
-              className="inline-flex items-center justify-center gap-2 border border-cream/40 text-cream px-8 py-3.5 text-xs tracking-[0.2em] uppercase hover:border-gold hover:text-gold transition-colors duration-300"
+              className="inline-flex items-center justify-center gap-2 border border-cream/40 text-cream px-8 py-3.5 text-xs tracking-[0.2em] uppercase hover:border-gold hover:text-gold transition-colors duration-300 backdrop-blur-sm bg-charcoal/20"
             >
               {t("cta.planViewing")}
             </Link>
