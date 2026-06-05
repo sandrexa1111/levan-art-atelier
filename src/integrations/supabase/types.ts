@@ -14,16 +14,226 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      artworks: {
+        Row: {
+          created_at: string
+          description_en: string | null
+          description_ka: string | null
+          gallery_images: string[]
+          height_cm: number | null
+          id: string
+          is_featured: boolean
+          is_published: boolean
+          main_image: string | null
+          medium_en: string | null
+          medium_ka: string | null
+          period: Database["public"]["Enums"]["art_period"]
+          price_gel: number
+          room_types: string[]
+          slug: string
+          status: Database["public"]["Enums"]["art_status"]
+          story_en: string | null
+          story_ka: string | null
+          subcategory: string | null
+          title_en: string
+          title_ka: string
+          updated_at: string
+          why_see_in_person_en: string | null
+          why_see_in_person_ka: string | null
+          width_cm: number | null
+          year: number | null
+        }
+        Insert: {
+          created_at?: string
+          description_en?: string | null
+          description_ka?: string | null
+          gallery_images?: string[]
+          height_cm?: number | null
+          id?: string
+          is_featured?: boolean
+          is_published?: boolean
+          main_image?: string | null
+          medium_en?: string | null
+          medium_ka?: string | null
+          period: Database["public"]["Enums"]["art_period"]
+          price_gel?: number
+          room_types?: string[]
+          slug: string
+          status?: Database["public"]["Enums"]["art_status"]
+          story_en?: string | null
+          story_ka?: string | null
+          subcategory?: string | null
+          title_en: string
+          title_ka: string
+          updated_at?: string
+          why_see_in_person_en?: string | null
+          why_see_in_person_ka?: string | null
+          width_cm?: number | null
+          year?: number | null
+        }
+        Update: {
+          created_at?: string
+          description_en?: string | null
+          description_ka?: string | null
+          gallery_images?: string[]
+          height_cm?: number | null
+          id?: string
+          is_featured?: boolean
+          is_published?: boolean
+          main_image?: string | null
+          medium_en?: string | null
+          medium_ka?: string | null
+          period?: Database["public"]["Enums"]["art_period"]
+          price_gel?: number
+          room_types?: string[]
+          slug?: string
+          status?: Database["public"]["Enums"]["art_status"]
+          story_en?: string | null
+          story_ka?: string | null
+          subcategory?: string | null
+          title_en?: string
+          title_ka?: string
+          updated_at?: string
+          why_see_in_person_en?: string | null
+          why_see_in_person_ka?: string | null
+          width_cm?: number | null
+          year?: number | null
+        }
+        Relationships: []
+      }
+      private_viewing_requests: {
+        Row: {
+          admin_notes: string | null
+          created_at: string
+          email: string | null
+          id: string
+          language: Database["public"]["Enums"]["request_lang"]
+          message: string | null
+          name: string
+          phone: string | null
+          preferred_date: string | null
+          preferred_time: string | null
+          selected_artwork_ids: string[]
+          status: Database["public"]["Enums"]["viewing_status"]
+        }
+        Insert: {
+          admin_notes?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          language?: Database["public"]["Enums"]["request_lang"]
+          message?: string | null
+          name: string
+          phone?: string | null
+          preferred_date?: string | null
+          preferred_time?: string | null
+          selected_artwork_ids?: string[]
+          status?: Database["public"]["Enums"]["viewing_status"]
+        }
+        Update: {
+          admin_notes?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          language?: Database["public"]["Enums"]["request_lang"]
+          message?: string | null
+          name?: string
+          phone?: string | null
+          preferred_date?: string | null
+          preferred_time?: string | null
+          selected_artwork_ids?: string[]
+          status?: Database["public"]["Enums"]["viewing_status"]
+        }
+        Relationships: []
+      }
+      tbc_detail_requests: {
+        Row: {
+          admin_notes: string | null
+          artwork_id: string | null
+          created_at: string
+          email: string | null
+          id: string
+          language: Database["public"]["Enums"]["request_lang"]
+          message: string | null
+          name: string
+          phone: string | null
+          status: Database["public"]["Enums"]["tbc_status"]
+        }
+        Insert: {
+          admin_notes?: string | null
+          artwork_id?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          language?: Database["public"]["Enums"]["request_lang"]
+          message?: string | null
+          name: string
+          phone?: string | null
+          status?: Database["public"]["Enums"]["tbc_status"]
+        }
+        Update: {
+          admin_notes?: string | null
+          artwork_id?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          language?: Database["public"]["Enums"]["request_lang"]
+          message?: string | null
+          name?: string
+          phone?: string | null
+          status?: Database["public"]["Enums"]["tbc_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tbc_detail_requests_artwork_id_fkey"
+            columns: ["artwork_id"]
+            isOneToOne: false
+            referencedRelation: "artworks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
+      art_period: "georgian" | "french" | "abstract"
+      art_status: "available" | "reserved_for_viewing" | "sold"
+      request_lang: "ka" | "en"
+      tbc_status: "new" | "sent" | "closed"
+      viewing_status: "new" | "contacted" | "scheduled" | "closed"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +360,13 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+      art_period: ["georgian", "french", "abstract"],
+      art_status: ["available", "reserved_for_viewing", "sold"],
+      request_lang: ["ka", "en"],
+      tbc_status: ["new", "sent", "closed"],
+      viewing_status: ["new", "contacted", "scheduled", "closed"],
+    },
   },
 } as const
