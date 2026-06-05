@@ -1,168 +1,174 @@
-import { useParams, Link } from "react-router-dom";
-import { artworks } from "@/data/artworks";
-import { useCart } from "@/context/CartContext";
-import { ArrowLeft, Shield, ZoomIn } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { toast } from "sonner";
+import { ArrowLeft, Bookmark, BookmarkCheck, MapPin, ZoomIn } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { Artwork, formatPrice, formatSize, medium, title, description, story, whyInPerson } from "@/lib/artwork";
+import { useLang } from "@/i18n/LanguageContext";
+import { useVisitList } from "@/context/VisitListContext";
+import { useSignedUrl } from "@/hooks/useSignedUrl";
+import TbcRequestDialog from "@/components/TbcRequestDialog";
 
 export default function ArtworkDetail() {
-  const { id } = useParams();
-  const artwork = artworks.find((a) => a.id === id);
-  const { addItem } = useCart();
-  const [zoomed, setZoomed] = useState(false);
+  const { slug } = useParams();
+  const { lang, t } = useLang();
+  const { has, toggle } = useVisitList();
+  const [artwork, setArtwork] = useState<Artwork | null>(null);
+  const [zoom, setZoom] = useState(false);
+  const [tbcOpen, setTbcOpen] = useState(false);
+
+  useEffect(() => {
+    if (!slug) return;
+    supabase
+      .from("artworks")
+      .select("*")
+      .eq("slug", slug)
+      .eq("is_published", true)
+      .maybeSingle()
+      .then(({ data }) => setArtwork(data as Artwork | null));
+  }, [slug]);
+
+  const mainUrl = useSignedUrl(artwork?.main_image);
 
   if (!artwork) {
     return (
       <div className="py-32 text-center">
-        <p className="text-muted-foreground">Artwork not found.</p>
-        <Link to="/gallery" className="text-gold underline mt-4 inline-block">Back to Gallery</Link>
+        <p className="text-muted-foreground">…</p>
       </div>
     );
   }
 
-  const handleBuyOriginal = () => {
-    addItem({
-      id: artwork.id,
-      title: `${artwork.title} (Original)`,
-      price: artwork.price,
-      image: artwork.images[0],
-      quantity: 1,
-      type: "artwork",
-    });
-    toast.success("Added to cart");
-  };
-
-  const handleBuyPrint = () => {
-    addItem({
-      id: artwork.id + "-print",
-      title: `${artwork.title} (Print)`,
-      price: artwork.printPrice || 200,
-      image: artwork.images[0],
-      quantity: 1,
-      type: "print",
-    });
-    toast.success("Added to cart");
-  };
+  const inList = has(artwork.id);
 
   return (
-    <div className="py-24 bg-background">
+    <div className="py-20 bg-background">
       <div className="container mx-auto px-6">
-        <Link to="/gallery" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-8">
-          <ArrowLeft size={16} /> Back to Gallery
+        <Link to="/artworks" className="inline-flex items-center gap-2 text-xs tracking-widest uppercase text-muted-foreground hover:text-foreground mb-8">
+          <ArrowLeft size={14} /> {t("cta.backToArtworks")}
         </Link>
 
         <div className="grid md:grid-cols-2 gap-12 lg:gap-20">
-          {/* Image */}
-          <div className="relative group cursor-zoom-in" onClick={() => setZoomed(true)}>
-            <img
-              src={artwork.images[0]}
-              alt={artwork.title}
-              className="w-full object-cover"
-            />
+          <div className="relative group cursor-zoom-in bg-secondary" onClick={() => setZoom(true)}>
+            {mainUrl && (
+              <img src={mainUrl} alt={title(artwork, lang)} className="w-full object-cover" loading="lazy" />
+            )}
             <div className="absolute inset-0 bg-charcoal/0 group-hover:bg-charcoal/20 transition-colors flex items-center justify-center">
               <ZoomIn className="text-cream opacity-0 group-hover:opacity-100 transition-opacity" size={32} />
             </div>
-            {artwork.isSold && (
-              <div className="absolute top-6 right-6 bg-charcoal text-cream text-sm tracking-wider uppercase px-4 py-2">
-                Sold
+            {artwork.status !== "available" && (
+              <div className="absolute top-4 right-4 bg-charcoal text-cream text-[10px] tracking-widest uppercase px-3 py-1.5">
+                {t(`status.${artwork.status}`)}
               </div>
             )}
           </div>
 
-          {/* Info */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <p className="text-gold text-sm tracking-[0.3em] uppercase mb-2">{artwork.year}</p>
-            <h1 className="font-serif text-3xl md:text-4xl mb-4">{artwork.title}</h1>
-            <p className="text-muted-foreground leading-relaxed mb-8">{artwork.description}</p>
+          <motion.div initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
+            <p className="text-gold text-xs tracking-[0.3em] uppercase mb-2">{t(`period.${artwork.period}`)}</p>
+            <h1 className="font-serif text-3xl md:text-4xl mb-4">{title(artwork, lang)}</h1>
 
-            <div className="space-y-3 mb-8 text-sm">
-              <div className="flex justify-between border-b border-border pb-3">
-                <span className="text-muted-foreground">Medium</span>
-                <span>{artwork.medium}</span>
+            {description(artwork, lang) && (
+              <p className="text-muted-foreground leading-relaxed mb-6">{description(artwork, lang)}</p>
+            )}
+            {story(artwork, lang) && (
+              <div className="mb-6">
+                <p className="text-xs tracking-widest uppercase text-gold mb-2">{t("fields.story")}</p>
+                <p className="text-muted-foreground leading-relaxed">{story(artwork, lang)}</p>
               </div>
-              <div className="flex justify-between border-b border-border pb-3">
-                <span className="text-muted-foreground">Dimensions</span>
-                <span>{artwork.dimensions}</span>
-              </div>
-              <div className="flex justify-between border-b border-border pb-3">
-                <span className="text-muted-foreground">Year</span>
-                <span>{artwork.year}</span>
-              </div>
-              <div className="flex justify-between border-b border-border pb-3">
-                <span className="text-muted-foreground">Price (Original)</span>
-                <span className="font-serif text-lg">{artwork.isSold ? "SOLD" : `€${artwork.price.toLocaleString()}`}</span>
-              </div>
-              {artwork.printPrice && (
-                <div className="flex justify-between border-b border-border pb-3">
-                  <span className="text-muted-foreground">Price (Print)</span>
-                  <span className="font-serif text-lg">From €{artwork.printPrice}</span>
-                </div>
-              )}
-            </div>
+            )}
 
-            <div className="flex flex-col gap-3 mb-10">
-              {!artwork.isSold && (
-                <button
-                  onClick={handleBuyOriginal}
-                  className="w-full bg-charcoal text-cream py-3.5 text-sm tracking-wider uppercase hover:bg-charcoal-light transition-colors"
-                >
-                  Buy Original — €{artwork.price.toLocaleString()}
-                </button>
+            <dl className="space-y-2.5 mb-8 text-sm border-y border-border py-5">
+              {medium(artwork, lang) && <Row label={t("fields.medium")} value={medium(artwork, lang)} />}
+              {(artwork.width_cm && artwork.height_cm) && (
+                <Row label={t("fields.size")} value={formatSize(artwork.width_cm, artwork.height_cm)} />
               )}
-              {artwork.printPrice && (
-                <button
-                  onClick={handleBuyPrint}
-                  className="w-full border border-foreground py-3.5 text-sm tracking-wider uppercase hover:bg-secondary transition-colors"
-                >
-                  Buy Print — From €{artwork.printPrice}
-                </button>
-              )}
-            </div>
+              {artwork.year && <Row label={t("fields.year")} value={String(artwork.year)} />}
+              {artwork.subcategory && <Row label="—" value={artwork.subcategory} />}
+              <Row label={t("fields.status")} value={t(`status.${artwork.status}`)} />
+              <Row label={t("fields.price")} value={<span className="font-serif text-lg">{formatPrice(artwork.price_gel, lang)}</span>} />
+            </dl>
 
-            {/* Certificate */}
-            {!artwork.isSold && (
-              <div className="bg-secondary p-6 flex gap-4 items-start">
-                <Shield className="text-gold mt-0.5 flex-shrink-0" size={20} />
-                <div>
-                  <h3 className="font-serif text-sm font-semibold mb-1">Certificate of Authenticity</h3>
-                  <p className="text-xs text-muted-foreground leading-relaxed">
-                    Each original painting comes with a signed Certificate of Authenticity, confirming the
-                    work as a genuine creation by Levan Mosiashvili. The certificate includes details about
-                    the artwork, its provenance, and a unique registration number.
-                  </p>
+            {whyInPerson(artwork, lang) && (
+              <div className="bg-secondary p-5 mb-6">
+                <p className="text-xs tracking-widest uppercase text-gold mb-2">{t("fields.whyInPerson")}</p>
+                <p className="text-sm leading-relaxed">{whyInPerson(artwork, lang)}</p>
+              </div>
+            )}
+
+            {artwork.room_types.length > 0 && (
+              <div className="mb-8">
+                <p className="text-xs tracking-widest uppercase text-muted-foreground mb-2">{t("fields.placement")}</p>
+                <div className="flex flex-wrap gap-2">
+                  {artwork.room_types.map((r) => (
+                    <span key={r} className="text-xs px-3 py-1 border border-border">
+                      {t(`rooms.${r}`)}
+                    </span>
+                  ))}
                 </div>
               </div>
             )}
+
+            <div className="flex flex-col gap-2.5">
+              <button
+                onClick={() => toggle(artwork.id)}
+                className={`w-full py-3.5 text-xs tracking-[0.2em] uppercase flex items-center justify-center gap-2 transition-colors ${
+                  inList ? "bg-gold text-charcoal" : "bg-charcoal text-cream hover:bg-charcoal-light"
+                }`}
+              >
+                {inList ? <BookmarkCheck size={16} /> : <Bookmark size={16} />}
+                {inList ? t("cta.inVisitList") : t("cta.addToVisit")}
+              </button>
+              <Link
+                to="/private-viewing"
+                className="w-full py-3.5 text-xs tracking-[0.2em] uppercase border border-foreground hover:bg-secondary transition-colors text-center"
+              >
+                {t("cta.requestViewing")}
+              </Link>
+              <button
+                onClick={() => setTbcOpen(true)}
+                className="w-full py-3.5 text-xs tracking-[0.2em] uppercase border border-border text-muted-foreground hover:text-foreground hover:border-foreground transition-colors"
+              >
+                {t("cta.requestTbc")}
+              </button>
+            </div>
+
+            <div className="mt-8 flex items-center gap-2 text-xs text-muted-foreground">
+              <MapPin size={14} className="text-gold" /> {t("footer.address")}
+            </div>
           </motion.div>
         </div>
       </div>
 
-      {/* Zoom Modal */}
       <AnimatePresence>
-        {zoomed && (
+        {zoom && mainUrl && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-50 bg-charcoal/95 flex items-center justify-center cursor-zoom-out p-4"
-            onClick={() => setZoomed(false)}
+            onClick={() => setZoom(false)}
           >
             <motion.img
-              initial={{ scale: 0.8 }}
+              initial={{ scale: 0.85 }}
               animate={{ scale: 1 }}
-              exit={{ scale: 0.8 }}
-              src={artwork.images[0]}
-              alt={artwork.title}
+              exit={{ scale: 0.85 }}
+              src={mainUrl}
+              alt={title(artwork, lang)}
               className="max-w-full max-h-full object-contain"
             />
           </motion.div>
         )}
       </AnimatePresence>
+
+      <TbcRequestDialog open={tbcOpen} onOpenChange={setTbcOpen} artwork={artwork} />
+    </div>
+  );
+}
+
+function Row({ label, value }: { label: string; value: React.ReactNode }) {
+  return (
+    <div className="flex justify-between gap-4">
+      <dt className="text-muted-foreground">{label}</dt>
+      <dd className="text-right">{value}</dd>
     </div>
   );
 }
