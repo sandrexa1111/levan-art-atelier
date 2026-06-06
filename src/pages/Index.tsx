@@ -119,8 +119,41 @@ export default function Index() {
         </div>
       </section>
 
+      {/* Room Preview teaser */}
+      <section className="py-20 bg-background">
+        <div className="container mx-auto px-6 max-w-5xl">
+          <div className="grid md:grid-cols-[1.1fr_1fr] gap-10 items-center border border-border bg-card p-6 md:p-10">
+            <div>
+              <p className="text-gold text-[10px] tracking-[0.3em] uppercase mb-3">{t("pages.homeRoomTeaser.eyebrow")}</p>
+              <h2 className="font-serif text-2xl md:text-3xl mb-4">{t("pages.homeRoomTeaser.title")}</h2>
+              <p className="text-muted-foreground leading-relaxed mb-6">{t("pages.homeRoomTeaser.body")}</p>
+              <Link
+                to="/artworks"
+                className="inline-flex items-center gap-2 text-xs tracking-[0.2em] uppercase border border-foreground/60 px-5 py-3 hover:border-gold hover:text-gold transition-colors"
+              >
+                {t("pages.homeRoomTeaser.cta")} <ArrowRight size={14} />
+              </Link>
+            </div>
+            <div className="relative aspect-[4/3] overflow-hidden bg-secondary">
+              <img
+                src="/__l5e/assets-v1/placeholder-room"
+                alt=""
+                className="absolute inset-0 w-full h-full object-cover opacity-0"
+                onError={(e) => ((e.currentTarget.style.display = "none"))}
+              />
+              <div
+                className="absolute inset-0 bg-cover bg-center"
+                style={{ backgroundImage: `url(${roomTeaserBg})` }}
+              />
+              <div className="absolute inset-0 bg-charcoal/10" />
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Artist preview */}
       <section className="py-24 bg-background">
+
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-2 gap-16 items-center max-w-5xl mx-auto">
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpSimple}>
