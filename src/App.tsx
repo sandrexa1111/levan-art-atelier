@@ -44,6 +44,8 @@ const App = () => (
                   <Route path="/periods" element={<Periods />} />
                   <Route path="/artist" element={<Artist />} />
                   <Route path="/private-viewing" element={<PrivateViewing />} />
+                  <Route path="/room-preview/:slug" element={<RoomPreview />} />
+                  <Route path="/room-compare" element={<RoomCompare />} />
                   <Route path="/visit-list" element={<VisitList />} />
                   <Route path="/admin/login" element={<AdminLogin />} />
                 </Route>
