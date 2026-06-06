@@ -14,6 +14,8 @@ import Artist from "./pages/Artist";
 import Periods from "./pages/Periods";
 import VisitList from "./pages/VisitList";
 import PrivateViewing from "./pages/PrivateViewing";
+import RoomPreview from "./pages/RoomPreview";
+import RoomCompare from "./pages/RoomCompare";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminLayout from "./pages/admin/AdminLayout";
