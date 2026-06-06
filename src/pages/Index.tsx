@@ -45,8 +45,11 @@ export default function Index() {
           <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl text-cream leading-tight mb-6 drop-shadow-[0_2px_20px_rgba(0,0,0,0.6)]">
             {t("pages.home.heroTitle")}
           </h1>
-          <p className="text-cream/80 text-base md:text-lg mb-10 max-w-xl mx-auto leading-relaxed">
+          <p className="text-cream/80 text-base md:text-lg mb-6 max-w-xl mx-auto leading-relaxed">
             {t("pages.home.heroSubtitle")}
+          </p>
+          <p className="text-cream/60 text-[11px] md:text-xs tracking-[0.18em] uppercase mb-10 max-w-2xl mx-auto">
+            {t("pages.home.trustLine")}
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link
@@ -137,7 +140,7 @@ export default function Index() {
         </div>
       </section>
 
-      {/* Private Viewing */}
+      {/* Private Visit */}
       <section className="py-24 bg-charcoal text-cream">
         <div className="container mx-auto px-6 max-w-2xl text-center">
           <p className="text-gold text-xs tracking-[0.3em] uppercase mb-3">{t("pages.home.viewingTitle")}</p>
@@ -154,6 +157,20 @@ export default function Index() {
               {t("cta.planViewing")} <ArrowRight size={14} />
             </Link>
           </div>
+        </div>
+      </section>
+
+      {/* Final CTA */}
+      <section className="py-24 bg-background">
+        <div className="container mx-auto px-6 max-w-2xl text-center">
+          <h2 className="font-serif text-3xl md:text-4xl mb-5">{t("pages.home.finalTitle")}</h2>
+          <p className="text-muted-foreground leading-relaxed mb-8">{t("pages.home.finalBody")}</p>
+          <Link
+            to="/visit-list"
+            className="inline-flex items-center gap-2 bg-charcoal text-cream px-8 py-3.5 text-xs tracking-[0.2em] uppercase hover:bg-charcoal-light transition-colors"
+          >
+            {t("nav.visitList")} <ArrowRight size={14} />
+          </Link>
         </div>
       </section>
     </div>

@@ -115,6 +115,10 @@ export default function ArtworkDetail() {
               </div>
             )}
 
+            <p className="text-xs leading-relaxed text-muted-foreground border-l-2 border-gold pl-3 mb-5">
+              {t("pages.artworkDetail.visitNote")}
+            </p>
+
             <div className="flex flex-col gap-2.5">
               <button
                 onClick={() => toggle(artwork.id)}
