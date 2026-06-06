@@ -136,12 +136,6 @@ export default function Index() {
               </Link>
             </div>
             <div className="relative aspect-[4/3] overflow-hidden bg-secondary">
-              <img
-                src="/__l5e/assets-v1/placeholder-room"
-                alt=""
-                className="absolute inset-0 w-full h-full object-cover opacity-0"
-                onError={(e) => ((e.currentTarget.style.display = "none"))}
-              />
               <div
                 className="absolute inset-0 bg-cover bg-center"
                 style={{ backgroundImage: `url(${roomTeaserBg.url})` }}
