@@ -14,6 +14,8 @@ import Artist from "./pages/Artist";
 import Periods from "./pages/Periods";
 import VisitList from "./pages/VisitList";
 import PrivateViewing from "./pages/PrivateViewing";
+import RoomPreview from "./pages/RoomPreview";
+import RoomCompare from "./pages/RoomCompare";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminLayout from "./pages/admin/AdminLayout";
@@ -42,6 +44,8 @@ const App = () => (
                   <Route path="/periods" element={<Periods />} />
                   <Route path="/artist" element={<Artist />} />
                   <Route path="/private-viewing" element={<PrivateViewing />} />
+                  <Route path="/room-preview/:slug" element={<RoomPreview />} />
+                  <Route path="/room-compare" element={<RoomCompare />} />
                   <Route path="/visit-list" element={<VisitList />} />
                   <Route path="/admin/login" element={<AdminLogin />} />
                 </Route>
