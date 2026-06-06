@@ -27,6 +27,7 @@ export const dict = {
     viewArtwork: { ka: "ნამუშევრის ნახვა", en: "View Artwork" },
     requestViewing: { ka: "კერძო ვიზიტის მოთხოვნა", en: "Request a Private Visit" },
     requestTbc: { ka: "TBC დეტალების მოთხოვნა", en: "Request TBC Details" },
+    previewInRoom: { ka: "ოთახში ნახვის პრევიუ", en: "Preview in a Room" },
     submit: { ka: "ვიზიტის მოთხოვნის გაგზავნა", en: "Send Visit Request" },
     backToArtworks: { ka: "ნამუშევრებზე დაბრუნება", en: "Back to Artworks" },
   },
