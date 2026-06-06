@@ -144,7 +144,7 @@ export default function Index() {
               />
               <div
                 className="absolute inset-0 bg-cover bg-center"
-                style={{ backgroundImage: `url(${roomTeaserBg})` }}
+                style={{ backgroundImage: `url(${roomTeaserBg.url})` }}
               />
               <div className="absolute inset-0 bg-charcoal/10" />
             </div>
