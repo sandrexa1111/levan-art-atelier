@@ -142,10 +142,20 @@ export default function AdminArtworkEditor() {
         </Field>
 
         <Field label="Main image">
+          <p className="text-xs text-muted-foreground mb-2 leading-relaxed">
+            მთავარი ფოტო გამოიყენება კატალოგში და ნამუშევრის მთავარ გვერდზე. ატვირთეთ სუფთა, სწორი, მაღალი ხარისხის ფოტო, სადაც ნამუშევარი სრულად ჩანს.
+            <br />
+            <span className="opacity-70">The main image is used in the catalog and on the artwork detail page. Upload a clean, straight, high-quality image where the full artwork is visible.</span>
+          </p>
           <ImageUpload path={a.main_image || null} onUpload={(f) => uploadImage(f, true)} onClear={() => set("main_image", null)} uploading={uploading} />
         </Field>
 
         <Field label="Gallery images">
+          <p className="text-xs text-muted-foreground mb-2 leading-relaxed">
+            გალერეის ფოტოები დამატებითი კადრებია: დეტალები, ტექსტურა, ჩარჩო, კედელზე განთავსება ან ახლო ხედები.
+            <br />
+            <span className="opacity-70">Gallery images are optional supporting images: details, texture, frame, wall placement, or close-up views.</span>
+          </p>
           <div className="space-y-2">
             <div className="flex flex-wrap gap-3">
               {(a.gallery_images || []).map((p) => (
