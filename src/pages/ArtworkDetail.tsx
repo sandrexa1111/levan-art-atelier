@@ -135,6 +135,12 @@ export default function ArtworkDetail() {
               >
                 {t("cta.requestViewing")}
               </Link>
+              <Link
+                to={`/room-preview/${artwork.slug}`}
+                className="w-full py-3.5 text-xs tracking-[0.2em] uppercase border border-gold text-gold hover:bg-gold hover:text-charcoal transition-colors text-center"
+              >
+                {t("cta.previewInRoom")}
+              </Link>
               <button
                 onClick={() => setTbcOpen(true)}
                 className="w-full py-3.5 text-xs tracking-[0.2em] uppercase border border-border text-muted-foreground hover:text-foreground hover:border-foreground transition-colors"
