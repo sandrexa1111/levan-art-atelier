@@ -213,6 +213,94 @@ export const dict = {
         en: "Schedule a private visit and view the works in a calm, personal setting at Giorgi Mazniashvili 29.",
       },
     },
+    roomPreview: {
+      eyebrow: { ka: "ფაზა II · საორიენტაციო პრევიუ", en: "Phase II · Indicative preview" },
+      title: { ka: "ოთახში ნახვის პრევიუ", en: "Preview in a Room" },
+      subtitle: {
+        ka: "აირჩიეთ სივრცე ან ატვირთეთ თქვენი ოთახის ფოტო და ნახეთ, როგორ შეიძლება გამოიყურებოდეს ნამუშევარი ინტერიერში.",
+        en: "Choose a room template or upload your own room photo to preview how the artwork may look in an interior.",
+      },
+      disclaimer: {
+        ka: "პრევიუ საორიენტაციოა. ფერი, ტექსტურა და მასშტაბი საუკეთესოდ აღიქმება კერძო ვიზიტის დროს.",
+        en: "Preview is indicative. Color, texture, and scale are best judged during a private visit.",
+      },
+      chooseRoom: { ka: "აირჩიეთ სივრცე", en: "Choose a room" },
+      uploadCta: { ka: "ჩემი ოთახის ატვირთვა", en: "Upload My Room" },
+      useTemplate: { ka: "შაბლონის გამოყენება", en: "Use a template" },
+      uploadNote: {
+        ka: "თქვენი ატვირთული ფოტო გამოიყენება მხოლოდ პრევიუს შესაქმნელად და საჯაროდ არ გამოჩნდება.",
+        en: "Your uploaded photo is used only to create the preview and will not be shown publicly.",
+      },
+      errImageOnly: { ka: "გთხოვთ ატვირთოთ ფოტო.", en: "Please upload an image file." },
+      errSize: { ka: "ფაილი ძალიან დიდია (მაქს. 8MB).", en: "File too large (max 8MB)." },
+      wallSize: { ka: "კედლის ზომა", en: "Wall size" },
+      size: {
+        small: { ka: "პატარა", en: "Small" },
+        medium: { ka: "საშუალო", en: "Medium" },
+        large: { ka: "დიდი", en: "Large" },
+      },
+      position: { ka: "პოზიცია", en: "Position" },
+      reset: { ka: "გადატვირთვა", en: "Reset" },
+      compareCta: { ka: "შედარება ერთ სივრცეში", en: "Compare in One Room" },
+      aiTitle: { ka: "AI პრევიუ", en: "AI Preview" },
+      aiCta: { ka: "AI პრევიუს შექმნა", en: "Generate AI Preview" },
+      aiSoon: {
+        ka: "AI პრევიუ მალე დაემატება. ამ ეტაპზე შეგიძლიათ გამოიყენოთ ოთახის შაბლონები.",
+        en: "AI preview is coming soon. For now, you can use room templates.",
+      },
+      rooms: {
+        living: { ka: "მისაღები ოთახი", en: "Living Room" },
+        bedroom: { ka: "საძინებელი", en: "Bedroom" },
+        workspace: { ka: "სამუშაო სივრცე", en: "Workspace" },
+        office: { ka: "ოფისი", en: "Office" },
+        restaurant: { ka: "რესტორანი", en: "Restaurant" },
+        gallery: { ka: "გალერეის კედელი", en: "Gallery Wall" },
+      },
+      report: {
+        eyebrow: { ka: "შეფასება", en: "Report" },
+        title: { ka: "ინტერიერის მოკლე შეფასება", en: "Interior Art Report" },
+        placementL: { ka: "სად ჯდება ნამუშევარი უკეთ", en: "Best placement" },
+        suitedL: { ka: "რა ტიპის სივრცეს უხდება", en: "Suitable room type" },
+        moodL: { ka: "ფერისა და განწყობის შენიშვნა", en: "Color and mood note" },
+        whyL: { ka: "რატომ ღირს ადგილზე ნახვა", en: "Why see it in person" },
+        disclaimer: {
+          ka: "ეს შეფასება არის საორიენტაციო და არ ცვლის ნამუშევრის ადგილზე ნახვას.",
+          en: "This report is indicative and does not replace seeing the work in person.",
+        },
+        placement: {
+          georgian: { ka: "თვალის სიმაღლეზე მისაღებში ან სასადილოში, ჩამქრალი მზის შუქით.", en: "At eye level in a living or dining area with soft, indirect light." },
+          french: { ka: "მისაღების ან ოფისის ცენტრალურ კედელზე, თბილ განათებაში.", en: "On a central wall in a living room or study with warm light." },
+          abstract: { ka: "სუფთა, მინიმალისტურ კედელზე — ოფისი, გალერეა ან თანამედროვე მისაღები.", en: "On a clean, minimal wall — office, gallery, or contemporary living space." },
+        },
+        suited: {
+          georgian: { ka: "სახლი, რესტორანი, კერძო კოლექცია — სითბოს და ნარატივის სივრცეები.", en: "Home, restaurant, or private collection — spaces of warmth and narrative." },
+          french: { ka: "მისაღები, ოფისი, კერძო კოლექცია — დახვეწილი, კამერული გარემო.", en: "Living room, office, or private collection — refined, intimate settings." },
+          abstract: { ka: "ოფისი, გალერეა, თანამედროვე ინტერიერი.", en: "Office, gallery, or contemporary interior." },
+        },
+        mood: {
+          georgian: { ka: "ფერი ცოცხალია; ნათელ კედელზე ბუნებრივი მზის შუქი ხაზს უსვამს ფერწერის სიღრმეს.", en: "Color is alive; a light wall and natural daylight emphasize the painting's depth." },
+          french: { ka: "ფერი დახვეწილია; თბილი განათება ხსნის ფერის ფენებს.", en: "Color is refined; warm light reveals layered tones." },
+          abstract: { ka: "ფერი და ფორმა მთავარია; ნეიტრალური კედელი იძლევა აუცილებელ სიჩუმეს.", en: "Color and form take the lead; a neutral wall provides the silence the work needs." },
+        },
+        why: {
+          georgian: { ka: "ფერწერის ტექსტურა და ფაქტურა ფოტოზე სრულად ვერ გადმოიცემა.", en: "The painting's texture and surface do not fully translate to a photograph." },
+          french: { ka: "ფერის ფენები და ბრძმედი ცოცხლად განსხვავებულად ცხოვრობს.", en: "Layered color and brushwork read very differently in person." },
+          abstract: { ka: "მასშტაბი და ფიზიკურობა აბსტრაქციის გასაგებად ცოცხლად უნდა იქნას აღქმული.", en: "Scale and physicality are essential to abstraction and must be felt in person." },
+        },
+      },
+    },
+    roomCompare: {
+      eyebrow: { ka: "შედარება", en: "Compare" },
+      title: { ka: "შედარება ერთ სივრცეში", en: "Compare in One Room" },
+      subtitle: {
+        ka: "ნახეთ ვიზიტის სიიდან 2–3 ნამუშევარი ერთსა და იმავე სივრცეში.",
+        en: "Preview 2–3 artworks from your visit list in the same room.",
+      },
+      empty: {
+        ka: "შედარებისთვის საჭიროა მინიმუმ 2 ნამუშევარი ვიზიტის სიაში.",
+        en: "Add at least 2 artworks to your visit list to compare them.",
+      },
+    },
     periods: {
       title: { ka: "შემოქმედებითი პერიოდები", en: "Creative Periods" },
       subtitle: {
@@ -220,6 +308,15 @@ export const dict = {
         en: "Levan Mosiashvili's work moves through Georgian, French, and Abstract periods.",
       },
       explore: { ka: "ნამუშევრების ნახვა", en: "Explore works" },
+    },
+    homeRoomTeaser: {
+      eyebrow: { ka: "ფაზა II", en: "Phase II" },
+      title: { ka: "ნახეთ ნამუშევარი თქვენს სივრცეში", en: "Preview Art in Your Space" },
+      body: {
+        ka: "აირჩიეთ ნამუშევარი და ნახეთ მისი საორიენტაციო პრევიუ მისაღებ ოთახში, ოფისში, რესტორანში ან თქვენს ატვირთულ სივრცეში.",
+        en: "Choose an artwork and preview how it may look in a living room, office, restaurant, or your uploaded interior.",
+      },
+      cta: { ka: "ოთახის პრევიუს ცდა", en: "Try Room Preview" },
     },
   },
   footer: {
