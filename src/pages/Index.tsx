@@ -45,8 +45,11 @@ export default function Index() {
           <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl text-cream leading-tight mb-6 drop-shadow-[0_2px_20px_rgba(0,0,0,0.6)]">
             {t("pages.home.heroTitle")}
           </h1>
-          <p className="text-cream/80 text-base md:text-lg mb-10 max-w-xl mx-auto leading-relaxed">
+          <p className="text-cream/80 text-base md:text-lg mb-6 max-w-xl mx-auto leading-relaxed">
             {t("pages.home.heroSubtitle")}
+          </p>
+          <p className="text-cream/60 text-[11px] md:text-xs tracking-[0.18em] uppercase mb-10 max-w-2xl mx-auto">
+            {t("pages.home.trustLine")}
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link
