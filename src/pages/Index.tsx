@@ -9,6 +9,7 @@ import ArtworkCard from "@/components/ArtworkCard";
 import { fadeUp, fadeUpSimple } from "@/lib/animations";
 import artistPortrait from "@/assets/artist-portrait.jpg";
 import heroPainting from "@/assets/hero-painting.png.asset.json";
+import roomTeaserBg from "@/assets/rooms/room-living.jpg.asset.json";
 
 export default function Index() {
   const { t } = useLang();
