@@ -140,7 +140,7 @@ export default function Index() {
         </div>
       </section>
 
-      {/* Private Viewing */}
+      {/* Private Visit */}
       <section className="py-24 bg-charcoal text-cream">
         <div className="container mx-auto px-6 max-w-2xl text-center">
           <p className="text-gold text-xs tracking-[0.3em] uppercase mb-3">{t("pages.home.viewingTitle")}</p>
@@ -157,6 +157,20 @@ export default function Index() {
               {t("cta.planViewing")} <ArrowRight size={14} />
             </Link>
           </div>
+        </div>
+      </section>
+
+      {/* Final CTA */}
+      <section className="py-24 bg-background">
+        <div className="container mx-auto px-6 max-w-2xl text-center">
+          <h2 className="font-serif text-3xl md:text-4xl mb-5">{t("pages.home.finalTitle")}</h2>
+          <p className="text-muted-foreground leading-relaxed mb-8">{t("pages.home.finalBody")}</p>
+          <Link
+            to="/visit-list"
+            className="inline-flex items-center gap-2 bg-charcoal text-cream px-8 py-3.5 text-xs tracking-[0.2em] uppercase hover:bg-charcoal-light transition-colors"
+          >
+            {t("nav.visitList")} <ArrowRight size={14} />
+          </Link>
         </div>
       </section>
     </div>
