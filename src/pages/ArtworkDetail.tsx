@@ -48,11 +48,19 @@ export default function ArtworkDetail() {
         </Link>
 
         <div className="grid md:grid-cols-2 gap-12 lg:gap-20">
-          <div className="relative group cursor-zoom-in bg-secondary" onClick={() => setZoom(true)}>
+          <div
+            className="relative group cursor-zoom-in w-full flex items-center justify-center bg-[#eee9df] border border-black/5 p-[clamp(8px,1.5vw,18px)]"
+            onClick={() => setZoom(true)}
+          >
             {mainUrl && (
-              <img src={mainUrl} alt={title(artwork, lang)} className="w-full object-cover" loading="lazy" />
+              <img
+                src={mainUrl}
+                alt={title(artwork, lang)}
+                className="block w-full h-auto max-h-[78vh] object-contain"
+                loading="lazy"
+              />
             )}
-            <div className="absolute inset-0 bg-charcoal/0 group-hover:bg-charcoal/20 transition-colors flex items-center justify-center">
+            <div className="absolute inset-0 bg-charcoal/0 group-hover:bg-charcoal/15 transition-colors flex items-center justify-center pointer-events-none">
               <ZoomIn className="text-cream opacity-0 group-hover:opacity-100 transition-opacity" size={32} />
             </div>
             {artwork.status !== "available" && (
