@@ -98,23 +98,12 @@ export default function Index() {
           </div>
           <div className="grid sm:grid-cols-3 gap-6">
             {(["georgian", "french", "abstract"] as const).map((p) => (
-              <Link
-                key={p}
-                to={`/artworks?period=${p}`}
-                className="group block p-8 bg-card border border-border hover:border-gold transition-colors"
-              >
-                <p className="text-xs tracking-[0.3em] uppercase text-muted-foreground mb-3 group-hover:text-gold transition-colors">
-                  {p}
-                </p>
-                <h3 className="font-serif text-xl mb-4">{t(`period.${p}`)}</h3>
-                <span className="inline-flex items-center gap-1 text-xs tracking-widest uppercase text-foreground/70 group-hover:text-gold transition-colors">
-                  {t("pages.periods.explore")} <ArrowRight size={12} />
-                </span>
-              </Link>
+              <PeriodCard key={p} period={p} />
             ))}
           </div>
         </div>
       </section>
+
 
       {/* Room Preview teaser */}
       <section className="py-20 bg-background">
