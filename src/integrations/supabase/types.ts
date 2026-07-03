@@ -101,6 +101,24 @@ export type Database = {
         }
         Relationships: []
       }
+      period_settings: {
+        Row: {
+          image_path: string | null
+          period: Database["public"]["Enums"]["art_period"]
+          updated_at: string
+        }
+        Insert: {
+          image_path?: string | null
+          period: Database["public"]["Enums"]["art_period"]
+          updated_at?: string
+        }
+        Update: {
+          image_path?: string | null
+          period?: Database["public"]["Enums"]["art_period"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
       private_viewing_requests: {
         Row: {
           admin_notes: string | null

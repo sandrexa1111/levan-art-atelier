@@ -25,6 +25,7 @@ export default function AdminLayout() {
           <NavLink to="/admin/artworks" className={link}>{t("admin.artworks")}</NavLink>
           <NavLink to="/admin/viewings" className={link}>{t("admin.viewings")}</NavLink>
           <NavLink to="/admin/tbc" className={link}>{t("admin.tbcRequests")}</NavLink>
+          <NavLink to="/admin/periods" className={link}>{t("admin.periods")}</NavLink>
           <button
             onClick={signOut}
             className="mt-6 flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground px-4"

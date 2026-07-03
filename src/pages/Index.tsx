@@ -7,9 +7,54 @@ import { useLang } from "@/i18n/LanguageContext";
 import { Artwork } from "@/lib/artwork";
 import ArtworkCard from "@/components/ArtworkCard";
 import { fadeUp, fadeUpSimple } from "@/lib/animations";
+import { useSignedUrl } from "@/hooks/useSignedUrl";
 import artistPortrait from "@/assets/artist-portrait.jpg";
 import heroPainting from "@/assets/hero-painting.png.asset.json";
 import roomTeaserBg from "@/assets/rooms/room-living.jpg.asset.json";
+
+type PeriodKey = "georgian" | "french" | "abstract";
+
+function PeriodCard({ period }: { period: PeriodKey }) {
+  const { t } = useLang();
+  const [path, setPath] = useState<string | null>(null);
+  useEffect(() => {
+    (supabase.from("period_settings" as any) as any)
+      .select("image_path")
+      .eq("period", period)
+      .maybeSingle()
+      .then(({ data }: any) => setPath(data?.image_path ?? null));
+  }, [period]);
+  const url = useSignedUrl(path);
+  return (
+    <Link
+      to={`/artworks?period=${period}`}
+      className="group block bg-card border border-border hover:border-gold transition-colors overflow-hidden"
+    >
+      <div className="p-6 pb-4 text-center">
+        <p className="text-[10px] tracking-[0.3em] uppercase text-muted-foreground mb-2 group-hover:text-gold transition-colors">
+          {period}
+        </p>
+        <h3 className="font-serif text-xl">{t(`period.${period}`)}</h3>
+      </div>
+      <div className="aspect-[4/5] bg-secondary overflow-hidden border-t border-border">
+        {url ? (
+          <img
+            src={url}
+            alt={t(`period.${period}`)}
+            className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700"
+          />
+        ) : (
+          <div className="w-full h-full" />
+        )}
+      </div>
+      <div className="p-5 text-center">
+        <span className="inline-flex items-center gap-1 text-[11px] tracking-widest uppercase text-foreground/70 group-hover:text-gold transition-colors">
+          {t("pages.periods.explore")} <ArrowRight size={12} />
+        </span>
+      </div>
+    </Link>
+  );
+}
 
 export default function Index() {
   const { t } = useLang();
@@ -42,15 +87,11 @@ export default function Index() {
           transition={{ duration: 1, delay: 0.2 }}
           className="relative text-center px-6 max-w-3xl"
         >
-          <p className="text-gold text-xs tracking-[0.4em] uppercase mb-6">{t("footer.byAppointment")}</p>
           <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl text-cream leading-tight mb-6 drop-shadow-[0_2px_20px_rgba(0,0,0,0.6)]">
             {t("pages.home.heroTitle")}
           </h1>
-          <p className="text-cream/80 text-base md:text-lg mb-6 max-w-xl mx-auto leading-relaxed">
+          <p className="text-cream/80 text-base md:text-lg mb-10 max-w-xl mx-auto leading-relaxed">
             {t("pages.home.heroSubtitle")}
-          </p>
-          <p className="text-cream/60 text-[11px] md:text-xs tracking-[0.18em] uppercase mb-10 max-w-2xl mx-auto">
-            {t("pages.home.trustLine")}
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link
@@ -102,23 +143,12 @@ export default function Index() {
           </div>
           <div className="grid sm:grid-cols-3 gap-6">
             {(["georgian", "french", "abstract"] as const).map((p) => (
-              <Link
-                key={p}
-                to={`/artworks?period=${p}`}
-                className="group block p-8 bg-card border border-border hover:border-gold transition-colors"
-              >
-                <p className="text-xs tracking-[0.3em] uppercase text-muted-foreground mb-3 group-hover:text-gold transition-colors">
-                  {p}
-                </p>
-                <h3 className="font-serif text-xl mb-4">{t(`period.${p}`)}</h3>
-                <span className="inline-flex items-center gap-1 text-xs tracking-widest uppercase text-foreground/70 group-hover:text-gold transition-colors">
-                  {t("pages.periods.explore")} <ArrowRight size={12} />
-                </span>
-              </Link>
+              <PeriodCard key={p} period={p} />
             ))}
           </div>
         </div>
       </section>
+
 
       {/* Room Preview teaser */}
       <section className="py-20 bg-background">

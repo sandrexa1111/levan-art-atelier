@@ -24,6 +24,7 @@ import AdminArtworks from "./pages/admin/AdminArtworks";
 import AdminArtworkEditor from "./pages/admin/AdminArtworkEditor";
 import AdminViewings from "./pages/admin/AdminViewings";
 import AdminTbcRequests from "./pages/admin/AdminTbcRequests";
+import AdminPeriods from "./pages/admin/AdminPeriods";
 
 const queryClient = new QueryClient();
 
@@ -55,6 +56,7 @@ const App = () => (
                   <Route path="artworks/:id" element={<AdminArtworkEditor />} />
                   <Route path="viewings" element={<AdminViewings />} />
                   <Route path="tbc" element={<AdminTbcRequests />} />
+                  <Route path="periods" element={<AdminPeriods />} />
                 </Route>
                 <Route path="*" element={<NotFound />} />
               </Routes>

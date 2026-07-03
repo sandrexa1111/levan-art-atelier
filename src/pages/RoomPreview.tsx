@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ArrowLeft, ArrowRight, Bookmark, BookmarkCheck, Upload, RotateCcw, MoveDiagonal, Layers } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -23,7 +23,8 @@ export default function RoomPreview() {
   const [customRoom, setCustomRoom] = useState<string | null>(null);
   const [size, setSize] = useState<SizeKey>("medium");
   const [offset, setOffset] = useState({ x: 0, y: 0 });
-  const [aiMessage, setAiMessage] = useState<string | null>(null);
+  const previewRef = useRef<HTMLDivElement>(null);
+  const dragRef = useRef<{ startX: number; startY: number; baseX: number; baseY: number } | null>(null);
 
   useEffect(() => {
     if (!slug) return;
@@ -151,23 +152,49 @@ export default function RoomPreview() {
           {/* Right: room + controls */}
           <div className="space-y-6">
             {/* Preview area */}
-            <div className="relative w-full overflow-hidden bg-secondary border border-border" style={{ aspectRatio: "16/9" }}>
-              <img src={roomBg} alt="" className="absolute inset-0 w-full h-full object-cover" />
+            <div
+              ref={previewRef}
+              className="relative w-full overflow-hidden bg-secondary border border-border select-none"
+              style={{ aspectRatio: "16/9" }}
+            >
+              <img src={roomBg} alt="" className="absolute inset-0 w-full h-full object-cover" draggable={false} />
+              {/* soft ambient wall wash */}
+              <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(0,0,0,0.35)_100%)]" />
               {artUrl && (
                 <div
-                  className="absolute"
+                  onPointerDown={(e) => {
+                    (e.currentTarget as HTMLDivElement).setPointerCapture(e.pointerId);
+                    dragRef.current = { startX: e.clientX, startY: e.clientY, baseX: offset.x, baseY: offset.y };
+                  }}
+                  onPointerMove={(e) => {
+                    const d = dragRef.current;
+                    const rect = previewRef.current?.getBoundingClientRect();
+                    if (!d || !rect) return;
+                    const dx = ((e.clientX - d.startX) / rect.width) * 100;
+                    const dy = ((e.clientY - d.startY) / rect.height) * 100;
+                    setOffset({ x: d.baseX + dx, y: d.baseY + dy });
+                  }}
+                  onPointerUp={() => (dragRef.current = null)}
+                  onPointerCancel={() => (dragRef.current = null)}
+                  className="absolute cursor-grab active:cursor-grabbing"
                   style={{
                     width: `${widthPct}%`,
                     left: `${cx}%`,
                     top: `${cy}%`,
                     transform: "translate(-50%, -50%)",
+                    touchAction: "none",
                   }}
                 >
                   <div
-                    className="bg-[#1a1410] p-[3%] shadow-[0_18px_40px_-12px_rgba(0,0,0,0.55)]"
+                    className="bg-[#1a1410] p-[3%] shadow-[0_24px_44px_-14px_rgba(0,0,0,0.7),0_6px_14px_-6px_rgba(0,0,0,0.5)]"
                     style={{ aspectRatio: `${1} / ${aspect}` }}
                   >
-                    <img src={artUrl} alt={title(artwork, lang)} className="w-full h-full object-contain bg-[#eee9df]" />
+                    <img
+                      src={artUrl}
+                      alt={title(artwork, lang)}
+                      className="w-full h-full object-contain bg-[#eee9df]"
+                      draggable={false}
+                    />
                   </div>
                 </div>
               )}
@@ -267,25 +294,6 @@ export default function RoomPreview() {
               </div>
             </div>
 
-            {/* AI placeholder */}
-            <div className="border border-border p-5 bg-secondary/50">
-              <div className="flex items-start justify-between gap-4 flex-col sm:flex-row">
-                <div>
-                  <p className="text-[10px] tracking-[0.25em] uppercase text-gold mb-2">
-                    {t("pages.roomPreview.aiTitle")}
-                  </p>
-                  <p className="text-sm text-muted-foreground max-w-md">
-                    {aiMessage ?? t("pages.roomPreview.aiSoon")}
-                  </p>
-                </div>
-                <button
-                  onClick={() => setAiMessage(t("pages.roomPreview.aiSoon"))}
-                  className="text-[11px] tracking-[0.2em] uppercase border border-foreground/40 px-4 py-2.5 hover:border-gold hover:text-gold"
-                >
-                  {t("pages.roomPreview.aiCta")}
-                </button>
-              </div>
-            </div>
 
             {/* Report */}
             <InteriorReport artwork={artwork} roomKey={customRoom ? null : roomKey} />
