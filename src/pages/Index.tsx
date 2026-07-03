@@ -7,6 +7,7 @@ import { useLang } from "@/i18n/LanguageContext";
 import { Artwork } from "@/lib/artwork";
 import ArtworkCard from "@/components/ArtworkCard";
 import { fadeUp, fadeUpSimple } from "@/lib/animations";
+import { useSignedUrl } from "@/hooks/useSignedUrl";
 import artistPortrait from "@/assets/artist-portrait.jpg";
 import heroPainting from "@/assets/hero-painting.png.asset.json";
 import roomTeaserBg from "@/assets/rooms/room-living.jpg.asset.json";
