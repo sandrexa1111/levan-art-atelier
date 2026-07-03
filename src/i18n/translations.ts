@@ -331,6 +331,13 @@ export const dict = {
     artworks: { ka: "ნამუშევრები", en: "Artworks" },
     viewings: { ka: "ნახვის მოთხოვნები", en: "Viewing Requests" },
     tbcRequests: { ka: "TBC მოთხოვნები", en: "TBC Requests" },
+    periods: { ka: "პერიოდები", en: "Periods" },
+    periodsHelp: {
+      ka: "აირჩიე ნახატი, რომელიც გამოჩნდება მთავარ გვერდზე თითოეული პერიოდის ქვეშ.",
+      en: "Choose a painting to display on the homepage under each period name.",
+    },
+    uploadImage: { ka: "ატვირთვა", en: "Upload" },
+    noImage: { ka: "სურათი არ არის", en: "No image" },
     signOut: { ka: "გასვლა", en: "Sign Out" },
   },
 } as const;
