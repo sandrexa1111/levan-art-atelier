@@ -152,23 +152,49 @@ export default function RoomPreview() {
           {/* Right: room + controls */}
           <div className="space-y-6">
             {/* Preview area */}
-            <div className="relative w-full overflow-hidden bg-secondary border border-border" style={{ aspectRatio: "16/9" }}>
-              <img src={roomBg} alt="" className="absolute inset-0 w-full h-full object-cover" />
+            <div
+              ref={previewRef}
+              className="relative w-full overflow-hidden bg-secondary border border-border select-none"
+              style={{ aspectRatio: "16/9" }}
+            >
+              <img src={roomBg} alt="" className="absolute inset-0 w-full h-full object-cover" draggable={false} />
+              {/* soft ambient wall wash */}
+              <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(0,0,0,0.35)_100%)]" />
               {artUrl && (
                 <div
-                  className="absolute"
+                  onPointerDown={(e) => {
+                    (e.currentTarget as HTMLDivElement).setPointerCapture(e.pointerId);
+                    dragRef.current = { startX: e.clientX, startY: e.clientY, baseX: offset.x, baseY: offset.y };
+                  }}
+                  onPointerMove={(e) => {
+                    const d = dragRef.current;
+                    const rect = previewRef.current?.getBoundingClientRect();
+                    if (!d || !rect) return;
+                    const dx = ((e.clientX - d.startX) / rect.width) * 100;
+                    const dy = ((e.clientY - d.startY) / rect.height) * 100;
+                    setOffset({ x: d.baseX + dx, y: d.baseY + dy });
+                  }}
+                  onPointerUp={() => (dragRef.current = null)}
+                  onPointerCancel={() => (dragRef.current = null)}
+                  className="absolute cursor-grab active:cursor-grabbing"
                   style={{
                     width: `${widthPct}%`,
                     left: `${cx}%`,
                     top: `${cy}%`,
                     transform: "translate(-50%, -50%)",
+                    touchAction: "none",
                   }}
                 >
                   <div
-                    className="bg-[#1a1410] p-[3%] shadow-[0_18px_40px_-12px_rgba(0,0,0,0.55)]"
+                    className="bg-[#1a1410] p-[3%] shadow-[0_24px_44px_-14px_rgba(0,0,0,0.7),0_6px_14px_-6px_rgba(0,0,0,0.5)]"
                     style={{ aspectRatio: `${1} / ${aspect}` }}
                   >
-                    <img src={artUrl} alt={title(artwork, lang)} className="w-full h-full object-contain bg-[#eee9df]" />
+                    <img
+                      src={artUrl}
+                      alt={title(artwork, lang)}
+                      className="w-full h-full object-contain bg-[#eee9df]"
+                      draggable={false}
+                    />
                   </div>
                 </div>
               )}
