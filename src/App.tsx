@@ -24,6 +24,7 @@ import AdminArtworks from "./pages/admin/AdminArtworks";
 import AdminArtworkEditor from "./pages/admin/AdminArtworkEditor";
 import AdminViewings from "./pages/admin/AdminViewings";
 import AdminTbcRequests from "./pages/admin/AdminTbcRequests";
+import AdminPeriods from "./pages/admin/AdminPeriods";
 
 const queryClient = new QueryClient();
 
