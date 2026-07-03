@@ -56,6 +56,7 @@ const App = () => (
                   <Route path="artworks/:id" element={<AdminArtworkEditor />} />
                   <Route path="viewings" element={<AdminViewings />} />
                   <Route path="tbc" element={<AdminTbcRequests />} />
+                  <Route path="periods" element={<AdminPeriods />} />
                 </Route>
                 <Route path="*" element={<NotFound />} />
               </Routes>
