@@ -294,25 +294,6 @@ export default function RoomPreview() {
               </div>
             </div>
 
-            {/* AI placeholder */}
-            <div className="border border-border p-5 bg-secondary/50">
-              <div className="flex items-start justify-between gap-4 flex-col sm:flex-row">
-                <div>
-                  <p className="text-[10px] tracking-[0.25em] uppercase text-gold mb-2">
-                    {t("pages.roomPreview.aiTitle")}
-                  </p>
-                  <p className="text-sm text-muted-foreground max-w-md">
-                    {aiMessage ?? t("pages.roomPreview.aiSoon")}
-                  </p>
-                </div>
-                <button
-                  onClick={() => setAiMessage(t("pages.roomPreview.aiSoon"))}
-                  className="text-[11px] tracking-[0.2em] uppercase border border-foreground/40 px-4 py-2.5 hover:border-gold hover:text-gold"
-                >
-                  {t("pages.roomPreview.aiCta")}
-                </button>
-              </div>
-            </div>
 
             {/* Report */}
             <InteriorReport artwork={artwork} roomKey={customRoom ? null : roomKey} />
