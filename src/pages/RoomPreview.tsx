@@ -23,7 +23,8 @@ export default function RoomPreview() {
   const [customRoom, setCustomRoom] = useState<string | null>(null);
   const [size, setSize] = useState<SizeKey>("medium");
   const [offset, setOffset] = useState({ x: 0, y: 0 });
-  const [aiMessage, setAiMessage] = useState<string | null>(null);
+  const previewRef = useRef<HTMLDivElement>(null);
+  const dragRef = useRef<{ startX: number; startY: number; baseX: number; baseY: number } | null>(null);
 
   useEffect(() => {
     if (!slug) return;
