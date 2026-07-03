@@ -11,6 +11,50 @@ import artistPortrait from "@/assets/artist-portrait.jpg";
 import heroPainting from "@/assets/hero-painting.png.asset.json";
 import roomTeaserBg from "@/assets/rooms/room-living.jpg.asset.json";
 
+type PeriodKey = "georgian" | "french" | "abstract";
+
+function PeriodCard({ period }: { period: PeriodKey }) {
+  const { t } = useLang();
+  const [path, setPath] = useState<string | null>(null);
+  useEffect(() => {
+    (supabase.from("period_settings" as any) as any)
+      .select("image_path")
+      .eq("period", period)
+      .maybeSingle()
+      .then(({ data }: any) => setPath(data?.image_path ?? null));
+  }, [period]);
+  const url = useSignedUrl(path);
+  return (
+    <Link
+      to={`/artworks?period=${period}`}
+      className="group block bg-card border border-border hover:border-gold transition-colors overflow-hidden"
+    >
+      <div className="p-6 pb-4 text-center">
+        <p className="text-[10px] tracking-[0.3em] uppercase text-muted-foreground mb-2 group-hover:text-gold transition-colors">
+          {period}
+        </p>
+        <h3 className="font-serif text-xl">{t(`period.${period}`)}</h3>
+      </div>
+      <div className="aspect-[4/5] bg-secondary overflow-hidden border-t border-border">
+        {url ? (
+          <img
+            src={url}
+            alt={t(`period.${period}`)}
+            className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700"
+          />
+        ) : (
+          <div className="w-full h-full" />
+        )}
+      </div>
+      <div className="p-5 text-center">
+        <span className="inline-flex items-center gap-1 text-[11px] tracking-widest uppercase text-foreground/70 group-hover:text-gold transition-colors">
+          {t("pages.periods.explore")} <ArrowRight size={12} />
+        </span>
+      </div>
+    </Link>
+  );
+}
+
 export default function Index() {
   const { t } = useLang();
   const [featured, setFeatured] = useState<Artwork[]>([]);
